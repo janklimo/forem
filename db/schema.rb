@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_05_050048) do
+ActiveRecord::Schema.define(version: 2020_08_06_051814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -945,6 +945,12 @@ ActiveRecord::Schema.define(version: 2020_08_05_050048) do
     t.index ["profile_id"], name: "index_profile_pins_on_profile_id"
   end
 
+  create_table "profiles", force: :cascade do |t|
+    t.jsonb "data"
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
   create_table "rating_votes", force: :cascade do |t|
     t.bigint "article_id"
     t.string "context", default: "explicit"
@@ -1347,6 +1353,7 @@ ActiveRecord::Schema.define(version: 2020_08_05_050048) do
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "page_views", "articles", on_delete: :cascade
   add_foreign_key "podcasts", "users", column: "creator_id"
+  add_foreign_key "profiles", "users"
   add_foreign_key "response_templates", "users"
   add_foreign_key "sponsorships", "organizations"
   add_foreign_key "sponsorships", "users"
